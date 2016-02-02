@@ -16,6 +16,6 @@ public class XmanApi {
         params.put("info", info);
         params.put("key", AppConfig.KEY_ROBOT);
         String robotUrl = "robot/index";
-        ApiHttpClient.get(ApiHttpClient.API_URL + robotUrl, params, handler);
+        ApiHttpClient.get(robotUrl, params, handler);
     }
 }
