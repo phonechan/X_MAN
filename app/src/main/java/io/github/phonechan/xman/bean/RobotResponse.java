@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by apple on 16/2/2.
  */
-public class RobotResponse implements Serializable {
+public class RobotResponse extends Entity {
 
     /**
      * reason : 成功的返回

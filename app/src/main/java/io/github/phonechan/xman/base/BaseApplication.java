@@ -19,7 +19,7 @@ public class BaseApplication extends Application {
         appResources = appContext.getResources();
     }
 
-    public static synchronized BaseApplication appContext() {
+    public static synchronized BaseApplication context() {
         return (BaseApplication) appContext;
     }
 

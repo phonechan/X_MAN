@@ -21,6 +21,9 @@ public class BaseFragment extends Fragment {
         return (AppContext) getActivity().getApplication();
     }
 
+    protected int getLayoutId() {
+        return 0;
+    }
 
     @Override
     public void onAttach(Context context) {

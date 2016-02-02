@@ -18,4 +18,19 @@ public class XmanApi {
         String robotUrl = "robot/index";
         ApiHttpClient.get(robotUrl, params, handler);
     }
+
+    public static void getNewsHotwords(AsyncHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("key", AppConfig.KEY_NEWS);
+        String newsUrl = "onebox/news/words";
+        ApiHttpClient.get(newsUrl, params, handler);
+    }
+
+    public static void getNewsList(String q, AsyncHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("q", q);
+        params.put("key", AppConfig.KEY_NEWS);
+        String newsUrl = "onebox/news/query";
+        ApiHttpClient.get(newsUrl, params, handler);
+    }
 }

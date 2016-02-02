@@ -3,6 +3,7 @@ package io.github.phonechan.xman;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.google.gson.Gson;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.loopj.android.http.AsyncHttpClient;
@@ -20,6 +21,14 @@ public class AppContext extends BaseApplication {
 
     private static AppContext instance;
 
+    private static Gson gson;
+
+    public static Gson getGson() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        return gson;
+    }
 
     /**
      * 获得当前app运行的AppContext

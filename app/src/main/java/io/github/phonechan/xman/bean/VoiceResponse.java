@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by apple on 16/2/2.
  */
-public class VoiceResponse {
+public class VoiceResponse extends Entity {
 
 
     /**
