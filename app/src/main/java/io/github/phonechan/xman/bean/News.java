@@ -1,5 +1,8 @@
 package io.github.phonechan.xman.bean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by chenfeng on 16/2/2.
  */
@@ -124,5 +127,13 @@ public class News extends Entity {
                 ", url='" + url + '\'' +
                 ", pdate_src='" + pdate_src + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public void parse(JSONObject jsonObject) throws JSONException {
+        title = jsonObject.getString("title");
+        full_title = jsonObject.getString("full_title");
+        img = jsonObject.getString("img");
     }
 }

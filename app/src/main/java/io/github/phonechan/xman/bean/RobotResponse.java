@@ -1,5 +1,8 @@
 package io.github.phonechan.xman.bean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -83,6 +86,9 @@ public class RobotResponse extends Entity {
                 ", error_code=" + error_code +
                 '}';
     }
-    
-    
+
+    @Override
+    public void parse(JSONObject jsonObject) throws JSONException {
+
+    }
 }

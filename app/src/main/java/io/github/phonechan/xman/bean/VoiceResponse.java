@@ -1,5 +1,8 @@
 package io.github.phonechan.xman.bean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 /**
@@ -112,5 +115,10 @@ public class VoiceResponse extends Entity {
                 return w;
             }
         }
+    }
+
+    @Override
+    public void parse(JSONObject jsonObject) throws JSONException {
+
     }
 }
