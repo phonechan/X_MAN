@@ -3,6 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorGreen">#FF45C01A</color>
+    <color name="colorGray">#FF555555</color>
+    <color name="colorGy">#FF333333</color>
 
     <!-- 常用颜色值 -->
     <color name="white40">#40FFFFFF</color>

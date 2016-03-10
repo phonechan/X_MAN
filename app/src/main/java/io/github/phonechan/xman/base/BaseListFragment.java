@@ -10,14 +10,19 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import io.github.phonechan.xman.R;
 import io.github.phonechan.xman.bean.Entity;
+import io.github.phonechan.xman.log.LogUtil;
 
 /**
  * Created by chenfeng on 16/2/2.
  */
 public abstract class BaseListFragment<T extends Entity> extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
         AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
+
+    private final static String TAG = BaseListFragment.class.getSimpleName();
 
     public static final int STATE_NONE = 0;
     public static final int STATE_REFRESH = 1;
@@ -28,10 +33,10 @@ public abstract class BaseListFragment<T extends Entity> extends BaseFragment im
 
     protected int mCurrentPage = 0;
 
-    //    @Bind(R.id.swiperefreshlayout)
+    @Bind(R.id.swiperefreshlayout)
     protected SwipeRefreshLayout swipeRefreshLayout;
 
-    //    @Bind(R.id.listview)
+    @Bind(R.id.listview)
     protected ListView listView;
 
     protected ListBaseAdapter<T> adapter;
@@ -46,24 +51,26 @@ public abstract class BaseListFragment<T extends Entity> extends BaseFragment im
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        LogUtil.i(TAG, "+++onCreateView+++");
+
         View view = inflater.inflate(getLayoutId(), container, false);
+        ButterKnife.bind(this, view);
+        initView();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        LogUtil.i(TAG, "+++onViewCreated+++");
         super.onViewCreated(view, savedInstanceState);
-//        ButterKnife.bind(this, view);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefreshlayout);
-        listView = (ListView) view.findViewById(R.id.listview);
-        initView();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        onRefresh();
+//        onRefresh();
     }
 
     private void initView() {

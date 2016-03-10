@@ -1,31 +1,55 @@
 package io.github.phonechan.xman.ui;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TabHost;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.github.phonechan.xman.R;
-import io.github.phonechan.xman.widget.MyFragmentTabHost;
+import io.github.phonechan.xman.fragment.ExploreFragment;
+import io.github.phonechan.xman.fragment.MyFragment;
+import io.github.phonechan.xman.fragment.NewsFragment;
+import io.github.phonechan.xman.fragment.TweetFragment;
+import io.github.phonechan.xman.log.LogUtil;
+import io.github.phonechan.xman.widget.ChangeColorIconWithText;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
 
     private static final String TAG = "MainActivity";
+    @Bind(R.id.view_pager)
+    ViewPager viewPager;
+    @Bind(R.id.nav_view)
+    NavigationView navView;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @Bind(R.id.tab_1)
+    ChangeColorIconWithText tab1;
+    @Bind(R.id.tab_2)
+    ChangeColorIconWithText tab2;
+    @Bind(R.id.tab_3)
+    ChangeColorIconWithText tab3;
+    @Bind(R.id.tab_4)
+    ChangeColorIconWithText tab4;
 
-    @Bind(android.R.id.tabhost)
-    public MyFragmentTabHost mTabHost;
 
+    private List<Fragment> fragmentList = new ArrayList<>();
+    private FragmentPagerAdapter adapter;
+
+    private List<ChangeColorIconWithText> tabIndicators = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,48 +57,44 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
     }
 
 
     private void initView() {
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.fl_content);
-        initTabs();
+        initFragments();
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(this);
+        navView.setNavigationItemSelectedListener(this);
+
+        tabIndicators.add(tab1);
+        tabIndicators.add(tab2);
+        tabIndicators.add(tab3);
+        tabIndicators.add(tab4);
+
+        tab1.setIconAlpha(1.0f);
     }
 
-    private void initTabs() {
-        MainTab[] tabs = MainTab.values();
-        final int size = tabs.length;
-        for (int i = 0; i < size; i++) {
-            MainTab mainTab = tabs[i];
-            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(getString(mainTab.getResName()));
-            View indicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
-            TextView title = (TextView) indicator.findViewById(R.id.tab_title);
-            Drawable drawable = this.getResources().getDrawable(mainTab.getResIcon());
-            title.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
-            title.setText(getString(mainTab.getResName()));
-            tabSpec.setIndicator(indicator);
-            tabSpec.setContent(new TabHost.TabContentFactory() {
-                @Override
-                public View createTabContent(String tag) {
-                    return new View(MainActivity.this);
-                }
-            });
-            mTabHost.addTab(tabSpec, mainTab.getClz(), null);
 
-        }
+    private void initFragments() {
 
-        mTabHost.setCurrentTab(0);
+        fragmentList.add(new NewsFragment());
+        fragmentList.add(new TweetFragment());
+        fragmentList.add(new ExploreFragment());
+        fragmentList.add(new MyFragment());
+
+        adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragmentList.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return fragmentList.size();
+            }
+        };
+
     }
 
     @Override
@@ -129,8 +149,70 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @OnClick({R.id.tab_1, R.id.tab_2, R.id.tab_3, R.id.tab_4})
+    public void onClick(View v) {
+
+        resetOtherTabs();
+
+        switch (v.getId()) {
+            case R.id.tab_1:
+
+                tab1.setIconAlpha(1.0f);
+                viewPager.setCurrentItem(0, true);
+                break;
+            case R.id.tab_2:
+
+                tab2.setIconAlpha(1.0f);
+                viewPager.setCurrentItem(1, true);
+                break;
+            case R.id.tab_3:
+
+                tab3.setIconAlpha(1.0f);
+                viewPager.setCurrentItem(2, true);
+                break;
+            case R.id.tab_4:
+
+                tab4.setIconAlpha(1.0f);
+                viewPager.setCurrentItem(3, true);
+                break;
+        }
+    }
+
+    /**
+     * 重置其他的TabIndicator的颜色
+     */
+    private void resetOtherTabs() {
+
+        for (ChangeColorIconWithText tab : tabIndicators) {
+            tab.setIconAlpha(0);
+            tab.setTextColor(R.color.green);
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        LogUtil.i(TAG, "position : " + position + " ,positionOffset : " + positionOffset + " ,positionOffsetPixels : " + positionOffsetPixels);
+        if (positionOffset > 0) {
+            ChangeColorIconWithText left = tabIndicators.get(position);
+            ChangeColorIconWithText right = tabIndicators.get(position + 1);
+            left.setIconAlpha(1 - positionOffset);
+            right.setIconAlpha(positionOffset);
+        }
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }
